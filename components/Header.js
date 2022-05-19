@@ -4,7 +4,11 @@ import Toolbar from "@mui/material/Toolbar";
 import { styled } from "@mui/system";
 import useSWR from "swr";
 import Typography from "@mui/material"
-
+import SettingsIcon from '@mui/icons-material/Settings';
+import HomeIcon from '@mui/icons-material/Home';
+import NextLink from 'next/link'
+import MuiLink from '@mui/material/Link'
+import MuiNextLink from '@components/MuiNextLink'
 
 const Offset = styled("div")(({ theme }) => theme.mixins.toolbar);
 
@@ -66,9 +70,23 @@ const Header = () => {
                         maxWidth="lg"
                         sx={{ display: `flex`, justifyContent: `space-between` }}
                     >
+                        <MuiNextLink 
+                            key="Home"
+                            href="/"
+                            sx={{color: `white`, opacity: 1.0}}
+                        >
+                            <HomeIcon />
+                        </MuiNextLink>
                         <CallSignHeader />
                         <NetworksHeader /> 
                         <div>tx: { parseFloat(data.config.Info.TXFrequency) / 1000000.0 } rx: { parseFloat(data.config.Info.RXFrequency) / 1000000.0 }</div>
+                        <MuiNextLink 
+                            key="Settings"
+                            href="/config"
+                            sx={{color: `white`, opacity: 1.0}}
+                        >
+                            <SettingsIcon />
+                        </MuiNextLink>
                     </Container>
                 </Toolbar>
             </AppBar>
