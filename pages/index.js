@@ -7,9 +7,6 @@ import Box from "@mui/material/Box"
 const Homepage = () => {
   return (
     <>
-      {/* <Container maxWidth="100%">
-        <h1>OLI MMDVM</h1>
-      </Container> */}
       <Tgif />
       </>
   );

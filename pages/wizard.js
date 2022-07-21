@@ -5,6 +5,7 @@ import Dmr from "@components/Dmr"
 import Box from "@mui/material/Box"
 import Checkbox from '@mui/material/Checkbox';
 import FormGroup from '@mui/material/FormGroup';
+import TextField from '@mui/material/TextField'
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Input from "@mui/material/Input"
 import Typography from "@mui/material/Typography"
@@ -26,44 +27,72 @@ const BasicInfo = () => {
     const [state, setState, onStateChange] = useState({
         dstar: false,
         dmr: false,
-        ysf: false
+        ysf: false,
+        callsign: ''
     })
 
-    // Attach an optional handler
-    handleStep(() => {
-      console.log('Going to step 2');
-    });
+    const {sections, setSections} = useState()
 
     const handleChange = (event) => {
-        setState({
-          ...state,
-          [event.target.name]: event.target.checked,
-        });
+        switch (event.target.type) {
+          case "checkbox":
+            setState({
+              ...state,
+              [event.target.name]: event.target.checked,
+            });
+            break
+          case "text":
+            setState({
+              ...state,
+              [event.target.name]: event.target.value,
+            })
+            break
+          default:
+            break
+        }
       };
 
     const { dstar, dmr, ysf } = state;
   
     return (
       <>
-        <Typography variant="h3">Select your modes</Typography>
-        <Box
-            component="FormGroup"
-            sx={{
-                '& > :not(style)': { m: 1 },
-            }}
-            autoComplete="off"
-        >
-            <FormControlLabel control={
-                <Checkbox checked={dstar} name="dstar" onChange={handleChange} /> 
-                } label="D-Star"/>
-            <FormControlLabel control={
-                <Checkbox />
-                } label="DMR" />
-            <FormControlLabel control={<Checkbox />} label="Yaesu Fusion" />
+        <Typography variant="h5">Select your modes</Typography>
+        <Box>
+          <div>
+            <FormGroup>
+              <FormControlLabel control={
+                <TextField variant="outlined"
+                  placeholder="Enter your callsign"
+                  onChange={handleChange}
+                  name="callsign"
+                />
+              } />
+              <FormControlLabel control={
+                  <Checkbox 
+                    checked={dstar} 
+                    name="dstar" 
+                    onChange={handleChange} /> 
+                  } label="D-Star"/>
+              <FormControlLabel control={
+                  <Checkbox                     
+                    checked={dmr} 
+                    name="dmr" 
+                    onChange={handleChange} /> 
+                  } label="DMR" />
+              <FormControlLabel control={
+                  <Checkbox                      
+                    checked={ysf} 
+                    name="ysf" 
+                    onChange={handleChange}  />                  
+                  } 
+                  label="Yaesu Fusion" />
+            </FormGroup>
+            </div>
+            {sections}
         </Box>
-        {/* <button onClick={() => previousStep()}>Previous ⏮️</button> */}
-        <br/>
-        <button onClick={() => nextStep()}>Next ⏭</button>
+        <Box>
+          Boink
+        </Box>
       </>
     );
   };
