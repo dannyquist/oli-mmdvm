@@ -30,6 +30,7 @@ const Homepage = () => {
 
     socket.on('dmr-status', msg => {
       console.log("web socket message received", msg)
+      setDmrStatus(msg)
     })
 
     socket.on('log', msg => {
