@@ -33,3 +33,4 @@ yarn-error.log*
 
 # jetbrains
 .idea
+yarn.lock
