@@ -10,7 +10,7 @@ import io from 'socket.io-client'
 
 const fetcher = (...args) => fetch(...args).then((res) => res.json())
 
-let socket
+let socket = null
 
 const Homepage = () => {
   const {data, error} = useSWR('/api/logs?mode=json', fetcher)
@@ -28,7 +28,8 @@ const Homepage = () => {
     })
 
     socket.on('dmr-status', msg => {
-      setDmrStatus(msg)
+      console.log("dmr-status", msg)
+      setDmrStatus({...msg})
     })
 
     socket.on('log', msg => {

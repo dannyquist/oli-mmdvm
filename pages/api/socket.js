@@ -46,19 +46,19 @@ const SocketHandler = (req, res) => {
                             socket.broadcast.emit('dmr-status', {type: 'state', component: 'MMDVMHost', status: 'running'})
                         } else if (_msg.includes("Downlink Activate received from")) {
                             const _from = _msg.split(" ").slice(-1)
-                            socket.broadcast.emit('dmr-status', {type: "start", from: _from})
+                            socket.broadcast.emit('dmr-status', {type: "start", from: _from, datetime: `${_date} ${_time}`})
                         } else if (_msg.includes("received network voice header from ")) {
                             const re = /received network voice header from (.*) to (.*)/
                             const reMatch = re.exec(_msg)
 
                             if (!reMatch) {
-                                console.log("Error parsing _msg")
+                                console.log("Error parsing", _msg)
                                 return
                             }
 
                             const [_m, _from, _to] = reMatch
 
-                            socket.broadcast.emit('dmr-status', {type: 'transmit', from: _from, to: _to})
+                            socket.broadcast.emit('dmr-status', {type: 'transmit', from: _from, to: _to, datetime: `${_date} ${_time}`})
 
                         } else if (_msg.includes("received network end of voice transmission from ")) {
                             const re = /DMR Slot ([0-9]), received network end of voice transmission from (.*) to (.*), ([0-9]+[.][0-9]+) seconds, ([0-9]+)[%] packet loss, BER: ([0-9]+[.][0-9]+)/
@@ -79,7 +79,8 @@ const SocketHandler = (req, res) => {
                                 to: _to,
                                 duration: _duration,
                                 packet_loss: _packet_loss,
-                                ber: _ber
+                                ber: _ber,
+                                datetime: `${_date} ${_time}`
                              })
                             
                         } else if (_msg.includes(" received RF voice header from ")) {
@@ -97,15 +98,17 @@ const SocketHandler = (req, res) => {
                                 type: 'network-start', 
                                 slot: _slot,
                                 from: _from,
-                                to: _to
+                                to: _to, 
+                                datetime: `${_date} ${_time}`
                             })
 
                         } else if (_msg.includes(" received RF end of voice transmission from ")) {
-                            const re = /DMR Slot ([0-9]), received RF end of voice transmission from (.*) to (.*), ([0-9]+[.][0-9]+) seconds, ([0-9]+)[%] packet loss, BER: ([0-9]+[.][0-9]+)/
-                            const reMatch = re.match(_msg)
+                            const re = /DMR Slot ([0-9]), received RF end of voice transmission from (.*) to (.*), ([0-9]+[.][0-9]+) seconds, BER: ([0-9]+[.][0-9]+)/
+                            const reMatch = re.exec(_msg)
 
                             if (!reMatch) {
                                 console.log("ERROR parsing", _msg)
+                                return
                             }
 
                             const [_m, _slot, _from, _to, _duration, _packet_loss, _ber] = reMatch
@@ -117,11 +120,13 @@ const SocketHandler = (req, res) => {
                                 to: _to,
                                 duration: _duration,
                                 packet_loss: _packet_loss,
-                                ber: _ber
+                                ber: _ber, 
+                                datetime: `${_date} ${_time}`
                              })
 
                         }else {
                             console.log("M message:", _msg)
+                            socket.broadcast.emit('log', {type: _type, date: _date, time: _time, msg: _msg})
                         }
 
 
@@ -132,7 +137,6 @@ const SocketHandler = (req, res) => {
                 }
 
             })
-
             mytail.start()
         })
     }
