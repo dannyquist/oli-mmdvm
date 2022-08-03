@@ -12,7 +12,10 @@ RUN yarn build
 FROM node:lts as runner
 WORKDIR /oli
 ENV NODE_ENV production
-COPY --from=builder /my-project/public ./public
-COPY --from=builder /my-project/.next ./.next
-COPY --from=builder /my-project/node_modules ./node_modules
-COPY --from=builder /my-project/package.json ./package.json
+COPY --from=builder /oli/public ./public
+COPY --from=builder /oli/.next ./.next
+COPY --from=builder /oli/node_modules ./node_modules
+COPY --from=builder /oli/package.json ./package.json
+
+EXPOSE 3000
+CMD ["yarn", "start"]
