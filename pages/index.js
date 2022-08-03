@@ -15,7 +15,6 @@ let socket
 const Homepage = () => {
   const {data, error} = useSWR('/api/logs?mode=json', fetcher)
   const [dmrStatus, setDmrStatus] = useState({})
-  const logsRef = useRef()
 
   useEffect(() => {
     async function fetchData() {
@@ -29,7 +28,6 @@ const Homepage = () => {
     })
 
     socket.on('dmr-status', msg => {
-      console.log("web socket message received", msg)
       setDmrStatus(msg)
     })
 
@@ -49,7 +47,7 @@ const Homepage = () => {
   return (
     <>
       <Dmr status={dmrStatus} />
-      <Logs ref={logsRef} logs={data} last={20} />
+      {/* <Logs logs={data} last={20} /> */}
       {/* <Typography>Logs: {JSON.stringify(data)}</Typography> */}
       </>
   );
