@@ -29,6 +29,5 @@ export default function Dmr(props) {
             </CardMedia>
         </Card>
 
-    
     )
 }
