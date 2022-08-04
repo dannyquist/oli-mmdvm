@@ -10,32 +10,38 @@ import io from 'socket.io-client'
 
 const fetcher = (...args) => fetch(...args).then((res) => res.json())
 
-let socket = null
-
 const Homepage = () => {
   const {data, error} = useSWR('/api/logs?mode=json', fetcher)
   const [dmrStatus, setDmrStatus] = useState({})
+  const dmrHistory = []
+  const [socket, setSocket] = useState(null)
 
   useEffect(() => {
     async function fetchData() {
       await fetch('/api/socket')
     }
+
     fetchData()
-    socket = io()
+    if (socket === null) {
+      setSocket(io())
+    }
 
-    socket.on('connect', () => {
-      console.log("Socket connected")
-    })
+    if (socket) {
+      socket.on('connect', () => {
+        console.log("Socket connected")
+      })
 
-    socket.on('dmr-status', msg => {
-      console.log("dmr-status", msg)
-      setDmrStatus({...msg})
-    })
+      socket.on('dmr-status', msg => {
+        console.log("dmr-status", msg)
+        dmrHistory.push(msg)
+        setDmrStatus({...msg})
+      })
 
-    socket.on('log', msg => {
-      console.log("log received", msg)
-    })
-  }, [])
+      socket.on('log', msg => {
+        console.log("log received", msg)
+      })
+    }
+  }, [socket])
 
   if (error) {
     return <Typography>Error: {error}</Typography>
@@ -47,7 +53,7 @@ const Homepage = () => {
 
   return (
     <>
-      <Dmr status={dmrStatus} />
+      <Dmr status={dmrStatus} history={dmrHistory} />
       {/* <Logs logs={data} last={20} /> */}
       {/* <Typography>Logs: {JSON.stringify(data)}</Typography> */}
       </>

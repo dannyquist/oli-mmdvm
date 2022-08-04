@@ -45,7 +45,7 @@ const SocketHandler = (req, res) => {
                         if (_msg === "MMDVMHost-20210921 is running") {
                             socket.broadcast.emit('dmr-status', {type: 'state', component: 'MMDVMHost', status: 'running'})
                         } else if (_msg.includes("Downlink Activate received from")) {
-                            const _from = _msg.split(" ").slice(-1)
+                            const _from = _msg.split(" ").slice(-1)[0]
                             socket.broadcast.emit('dmr-status', {type: "start", from: _from, datetime: `${_date} ${_time}`})
                         } else if (_msg.includes("received network voice header from ")) {
                             const re = /received network voice header from (.*) to (.*)/
