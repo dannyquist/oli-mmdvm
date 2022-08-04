@@ -13,7 +13,6 @@ const fetcher = (...args) => fetch(...args).then((res) => res.json())
 const Homepage = () => {
   const {data, error} = useSWR('/api/logs?mode=json', fetcher)
   const [dmrStatus, setDmrStatus] = useState({})
-  const dmrHistory = []
   const [socket, setSocket] = useState(null)
 
   useEffect(() => {
@@ -33,12 +32,20 @@ const Homepage = () => {
 
       socket.on('dmr-status', msg => {
         console.log("dmr-status", msg)
-        dmrHistory.push(msg)
-        setDmrStatus({...msg})
+        switch(msg.type) {
+          case 'start':
+          case 'rf-end':
+          case 'transmit':
+          case 'network-end':
+              setDmrStatus({...msg})
+            break
+          default:
+            console.log("unhandled message:", msg)
+        }
       })
 
       socket.on('log', msg => {
-        console.log("log received", msg)
+        // console.log("log received", msg)
       })
     }
   }, [socket])
@@ -53,7 +60,7 @@ const Homepage = () => {
 
   return (
     <>
-      <Dmr status={dmrStatus} history={dmrHistory} />
+      <Dmr status={dmrStatus} />
       {/* <Logs logs={data} last={20} /> */}
       {/* <Typography>Logs: {JSON.stringify(data)}</Typography> */}
       </>
