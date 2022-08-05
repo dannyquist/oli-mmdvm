@@ -12,18 +12,12 @@ import Paper from '@mui/material/Paper';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Input from "@mui/material/Input"
 import Typography from "@mui/material/Typography"
+import Button from "@mui/material/Button";
 import { Wizard, useWizard } from 'react-use-wizard';
-import {useState} from 'react'
+import {useState, useEffect} from 'react'
+import Link from 'next/link'
 
-export default function WizardPage(props) {
-    return (
-        <Wizard>
-            <BasicInfo />
-        </Wizard>
-    )
-}
-
-const ariaLabel = { 'aria-label': 'description' };
+const fetcher = (...args) => fetch(...args).then((res) => res.json())
 
 const Item = styled(Paper)(({ theme }) => ({
     backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
@@ -33,14 +27,18 @@ const Item = styled(Paper)(({ theme }) => ({
     color: theme.palette.text.secondary,
 }));
 
-function BasicInfo() {
-    const { handleStep, previousStep, nextStep } = useWizard();
-    const [state, setState, onStateChange] = useState({
-        dstar: false,
-        dmr: false,
-        ysf: false,
-        callsign: ''
-    })
+export default function WizardPage() {
+    const {data, error} = useSWR('/api/mmdvm?mode=json', fetcher)
+    let initialState
+    if (error) {
+        console.log("Could not fetch config", error)
+    }
+
+    if (!data) {
+        initialState = {}
+    }
+
+    const [state, setState] = useState({})
 
     const {sections, setSections} = useState()
 
@@ -63,83 +61,86 @@ function BasicInfo() {
         }
       };
 
-    const { dstar, dmr, ysf } = state;
-  
+    function onSave() {
+        fetch("/api/wizard", {
+            method: 'POST',
+            body: JSON.stringify(state)
+        })
+            .then(response => response.json())
+            .then(data => console.log("Received response from save event", data))
+    }
+
+    useEffect(function() {
+        if (!data)
+            return
+
+        setState({...state,
+            callsign: data.config.General.Callsign,
+            dmrid: data.config.DMR.Id,
+            dmrnetwork: data.config["DMR Network"].Address,
+            dmrnetworkport: data.config["DMR Network"].Port,
+            dmrpassword: data.config["DMR Network"].Password,
+            txfreq: data.config.Info.RXFrequency,
+            rxfreq: data.config.Info.TXFrequency,
+            lat: data.config.Info.Latitude,
+            lon: data.config.Info.Longitude,
+            location: data.config.Info.Location,
+            country: data.config.Info.Description
+        })
+
+        console.log("Current State", state)
+    }, [data])
+
     return (
-        <Box
-            component="form"
-            sx={{
-                '& > :not(style)': {m: 1, width: '25ch'},
-            }}
-            noValidate
-            autoComplete="off"
-            >
-            
-            <TextField id="outlined-basic" label="Outlined" variant="outlined" />
-            <TextField id="filled-basic" label="Filled" variant="filled" />
-            <TextField id="standard-basic" label="Standard" variant="standard" />
-        </Box>
+        <>
+            <Box
+                component="form"
+                sx={{
+                    '& > :not(style)': {m: 1, width: '25ch'},
+                }}
+                noValidate
+                autoComplete="off"
+                >
+                <Button onClick={onSave}>Save</Button>
+                <Typography variant="h5">Callsign</Typography>
+                <Typography gutterBottom>This is your government issued amateur radio callsign</Typography>
+                <TextField name="callsign" onChange={handleChange} value={state.callsign} variant="outlined" />
+
+                <Typography variant="h5">DMR ID</Typography>
+                <Typography gutterBottom>Brandmeister issued ID. Register at <a target="_blank" href="https://radioid.net">RadioID</a></Typography>
+                <TextField name="dmrid" onChange={handleChange} value={state.dmrid} variant="outlined" />
+
+                <Typography variant="h5">DMR Network</Typography>
+                <TextField name="dmrnetwork" onChange={handleChange} value={state.dmrnetwork} variant="outlined" />
+
+                <Typography variant="h5">DMR Network Port</Typography>
+                <TextField name="dmrnetworkport" onChange={handleChange}  value={state.dmrnetworkport} variant="outlined" />
+
+                <Typography variant="h5">DMR Network Password</Typography>
+                <TextField name="dmrpassword" onChange={handleChange} value={state.dmrpassword} variant="outlined" />
+
+                <Typography variant="h5">TX Frequency</Typography>
+                <TextField name="txfreq" onChange={handleChange}  value={state.txfreq} variant="outlined" />
+
+                <Typography variant="h5">RX Frequency</Typography>
+                <TextField name="rxfreq" onChange={handleChange} value={state.rxfreq} variant="outlined" />
+
+                <Typography variant="h5">Latitude</Typography>
+                <TextField name="lat" onChange={handleChange}  value={state.lat} variant="outlined" />
+
+                <Typography variant="h5">Longitude</Typography>
+                <TextField name="lon" onChange={handleChange} value={state.lon} variant="outlined" />
+
+                <Typography variant="h5">Location</Typography>
+                <TextField name="location" onChange={handleChange} value={state.location} variant="outlined" />
+
+                <Typography variant="h5">Country</Typography>
+                <TextField name="country" onChange={handleChange}  value={state.country} variant="outlined" />
+
+
+            </Box>
+            <Typography>{JSON.stringify(state)}</Typography>
+        </>
     )
 
-    return (
-      <>
-        <Grid container spacing={2} >
-
-            <Grid item sm container xs={12}>
-                <Grid item xs container direction="column" spacing={2}>
-                    <Grid item xs={12}>
-                        <Typography variant="h5">Callsign</Typography>
-                        You had to take a test to get this.
-                    </Grid>
-                    <Grid item xs>
-                        <TextField variant="outlined"
-                                   placeholder=""
-                                   onChange={handleChange}
-                                   name="callsign"
-                        />
-                    </Grid>
-                </Grid>
-            </Grid>
-            <Grid item sm container xs={12}>
-                <Grid item xs container direction="column" spacing={2}>
-                    <Grid item xs={12}>
-                        <Typography variant="h5">Callsign</Typography>
-                        You had to take a test to get this.
-                    </Grid>
-                    <Grid item xs>
-                        <TextField variant="outlined"
-                                   placeholder=""
-                                   onChange={handleChange}
-                                   name="callsign"
-                        />
-                    </Grid>
-                </Grid>
-            </Grid>
-            {/*<div>*/}
-
-            {/*  <FormControlLabel control={*/}
-            {/*      <Checkbox */}
-            {/*        checked={dstar} */}
-            {/*        name="dstar" */}
-            {/*        onChange={handleChange} /> */}
-            {/*      } label="D-Star"/>*/}
-            {/*  <FormControlLabel control={*/}
-            {/*      <Checkbox                     */}
-            {/*        checked={dmr} */}
-            {/*        name="dmr" */}
-            {/*        onChange={handleChange} /> */}
-            {/*      } label="DMR" />*/}
-            {/*  <FormControlLabel control={*/}
-            {/*      <Checkbox                      */}
-            {/*        checked={ysf} */}
-            {/*        name="ysf" */}
-            {/*        onChange={handleChange}  />                  */}
-            {/*      } */}
-            {/*      label="Yaesu Fusion" />*/}
-            {/*</FormGroup>*/}
-            {/*</div>*/}
-            {sections}
-        </Grid>
-      </>
-    );
   };
