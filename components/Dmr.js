@@ -11,16 +11,14 @@ export default function Dmr(props) {
 
     return (
         <Card sx={{ display: 'flex'}}>
-            <Box sx={{ display: 'flex', flexDirection: 'column'}}>
-                <CardContent sx={{flex: '1 0 auto' }}>
-                    <Typography component='div' variant='h5'>
-                        RX: {props.status.from}
-                    </Typography>
-                    <Typography variant="subtitle1" color="text.secondary" component="div">
-                        TX: {props.status.to ? props.status.to : "RF"}
-                    </Typography>
-                </CardContent>
-            </Box>
+            <CardContent sx={{flex: '1 0 auto' }}>
+                <Typography component='div' variant='h5'>
+                    RX: {props.status.from}
+                </Typography>
+                <Typography variant="subtitle1" color="text.secondary" component="div">
+                    TX: {props.status.to ? props.status.to : "RF"}
+                </Typography>
+            </CardContent>
             <CardMedia component="Box" >
                     <Typography variant='h5'>Slot: {props.status.slot}</Typography>
                     <Typography>BER: {props.status.ber}</Typography>
