@@ -17,14 +17,6 @@ const Homepage = () => {
   const [socket, setSocket] = useState(null)
   let configOk = false
 
-  if (error) {
-    return <Typography>Error: {error}</Typography>
-  }
-
-  if (!data) {
-    return <Typography>Loading</Typography>
-  }
-
   useEffect(() => {
     async function fetchData() {
       await fetch('/api/socket')
@@ -62,6 +54,14 @@ const Homepage = () => {
       })
     }
   }, [socket])
+
+  if (error) {
+    return <Typography>Error: {error}</Typography>
+  }
+
+  if (!data) {
+    return <Typography>Loading</Typography>
+  }
 
   return (
     <>
