@@ -5,7 +5,10 @@ import Dmr from "@components/Dmr"
 import Box from "@mui/material/Box"
 import Checkbox from '@mui/material/Checkbox';
 import FormGroup from '@mui/material/FormGroup';
+import {Grid} from "@mui/material";
 import TextField from '@mui/material/TextField'
+import { styled } from '@mui/material/styles';
+import Paper from '@mui/material/Paper';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Input from "@mui/material/Input"
 import Typography from "@mui/material/Typography"
@@ -22,7 +25,15 @@ export default function WizardPage(props) {
 
 const ariaLabel = { 'aria-label': 'description' };
 
-const BasicInfo = () => {
+const Item = styled(Paper)(({ theme }) => ({
+    backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
+    ...theme.typography.body2,
+    padding: theme.spacing(1),
+    textAlign: 'center',
+    color: theme.palette.text.secondary,
+}));
+
+function BasicInfo() {
     const { handleStep, previousStep, nextStep } = useWizard();
     const [state, setState, onStateChange] = useState({
         dstar: false,
@@ -55,44 +66,80 @@ const BasicInfo = () => {
     const { dstar, dmr, ysf } = state;
   
     return (
+        <Box
+            component="form"
+            sx={{
+                '& > :not(style)': {m: 1, width: '25ch'},
+            }}
+            noValidate
+            autoComplete="off"
+            >
+            
+            <TextField id="outlined-basic" label="Outlined" variant="outlined" />
+            <TextField id="filled-basic" label="Filled" variant="filled" />
+            <TextField id="standard-basic" label="Standard" variant="standard" />
+        </Box>
+    )
+
+    return (
       <>
-        <Typography variant="h5">Select your modes</Typography>
-        <Box>
-          <div>
-            <FormGroup>
-              <FormControlLabel control={
-                <TextField variant="outlined"
-                  placeholder="Enter your callsign"
-                  onChange={handleChange}
-                  name="callsign"
-                />
-              } />
-              <FormControlLabel control={
-                  <Checkbox 
-                    checked={dstar} 
-                    name="dstar" 
-                    onChange={handleChange} /> 
-                  } label="D-Star"/>
-              <FormControlLabel control={
-                  <Checkbox                     
-                    checked={dmr} 
-                    name="dmr" 
-                    onChange={handleChange} /> 
-                  } label="DMR" />
-              <FormControlLabel control={
-                  <Checkbox                      
-                    checked={ysf} 
-                    name="ysf" 
-                    onChange={handleChange}  />                  
-                  } 
-                  label="Yaesu Fusion" />
-            </FormGroup>
-            </div>
+        <Grid container spacing={2} >
+
+            <Grid item sm container xs={12}>
+                <Grid item xs container direction="column" spacing={2}>
+                    <Grid item xs={12}>
+                        <Typography variant="h5">Callsign</Typography>
+                        You had to take a test to get this.
+                    </Grid>
+                    <Grid item xs>
+                        <TextField variant="outlined"
+                                   placeholder=""
+                                   onChange={handleChange}
+                                   name="callsign"
+                        />
+                    </Grid>
+                </Grid>
+            </Grid>
+            <Grid item sm container xs={12}>
+                <Grid item xs container direction="column" spacing={2}>
+                    <Grid item xs={12}>
+                        <Typography variant="h5">Callsign</Typography>
+                        You had to take a test to get this.
+                    </Grid>
+                    <Grid item xs>
+                        <TextField variant="outlined"
+                                   placeholder=""
+                                   onChange={handleChange}
+                                   name="callsign"
+                        />
+                    </Grid>
+                </Grid>
+            </Grid>
+            {/*<div>*/}
+
+            {/*  <FormControlLabel control={*/}
+            {/*      <Checkbox */}
+            {/*        checked={dstar} */}
+            {/*        name="dstar" */}
+            {/*        onChange={handleChange} /> */}
+            {/*      } label="D-Star"/>*/}
+            {/*  <FormControlLabel control={*/}
+            {/*      <Checkbox                     */}
+            {/*        checked={dmr} */}
+            {/*        name="dmr" */}
+            {/*        onChange={handleChange} /> */}
+            {/*      } label="DMR" />*/}
+            {/*  <FormControlLabel control={*/}
+            {/*      <Checkbox                      */}
+            {/*        checked={ysf} */}
+            {/*        name="ysf" */}
+            {/*        onChange={handleChange}  />                  */}
+            {/*      } */}
+            {/*      label="Yaesu Fusion" />*/}
+            {/*</FormGroup>*/}
+            {/*</div>*/}
             {sections}
-        </Box>
-        <Box>
-          Boink
-        </Box>
+        </Grid>
       </>
     );
   };

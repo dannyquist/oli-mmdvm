@@ -15,7 +15,7 @@ const Homepage = () => {
   const {data, error} = useSWR('/api/logs?mode=json', fetcher)
   const [dmrStatus, setDmrStatus] = useState({})
   const [socket, setSocket] = useState(null)
-  const router = useRouter()
+  let configOk = false
 
   if (error) {
     return <Typography>Error: {error}</Typography>
@@ -25,14 +25,13 @@ const Homepage = () => {
     return <Typography>Loading</Typography>
   }
 
-  if (data.status !== "OK") {
-    router.push("/wizard")
-  }
-
   useEffect(() => {
     async function fetchData() {
       await fetch('/api/socket')
     }
+
+    if (!configOk)
+      return
 
     fetchData()
     if (socket === null) {
