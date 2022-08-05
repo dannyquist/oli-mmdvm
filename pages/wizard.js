@@ -74,6 +74,12 @@ export default function WizardPage() {
         if (!data)
             return
 
+        if (!data.config)
+             return
+
+        if (Object.keys(data.config).length === 0)
+            return
+
         setState({...state,
             callsign: data.config.General.Callsign,
             dmrid: data.config.DMR.Id,
