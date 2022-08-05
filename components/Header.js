@@ -27,12 +27,7 @@ function getEnabledNetworks(config) {
 }
 
 function NetworksHeader(props) {
-    const {data, error} = useSWR('/api/mmdvm?mode=json', fetcher)
-
-    if (error) return <>Failed to load</>
-    if (!data) return <>Loading...</>
-
-    const nets = getEnabledNetworks(data.config)
+    const nets = getEnabledNetworks(props.config)
 
     return (
         <>
@@ -43,16 +38,8 @@ function NetworksHeader(props) {
     )
 }
 
-function CallSignHeader() {
-    const {data, error} = useSWR('/api/mmdvm?mode=json', fetcher)
-
-    if (error) return <>Failed to load</>
-    if (!data) return <>Loading...</>
-    
-    console.log(data.config.General.Callsign)
-
-    return <>{data.config.General.Callsign}</>
-    
+function CallSignHeader(props) {
+    return <>{props.config.General.Callsign}</>
 }
 
 
@@ -61,6 +48,10 @@ const Header = () => {
 
     if (error) return <>Failed to load</>
     if (!data) return <>Loading...</>
+
+    if (data.status === "not configured") {
+        return <>Not configured</>
+    }
 
     return (
         <>
@@ -77,8 +68,8 @@ const Header = () => {
                         >
                             <HomeIcon />
                         </MuiNextLink>
-                        <CallSignHeader />
-                        <NetworksHeader /> 
+                        <CallSignHeader config={data.config} />
+                        <NetworksHeader config={data.config} /> 
                         <div>tx: { parseFloat(data.config.Info.TXFrequency) / 1000000.0 } rx: { parseFloat(data.config.Info.RXFrequency) / 1000000.0 }</div>
                         <MuiNextLink 
                             key="Settings"

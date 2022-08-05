@@ -1,5 +1,6 @@
 import useSWR from 'swr'
 import {useRef, useEffect, useState} from 'react'
+import { useRouter } from "next/router";
 import Container from "@mui/material/Container";
 import { Typography } from '@mui/material';
 import Tgif from "@components/Tgif"
@@ -14,6 +15,19 @@ const Homepage = () => {
   const {data, error} = useSWR('/api/logs?mode=json', fetcher)
   const [dmrStatus, setDmrStatus] = useState({})
   const [socket, setSocket] = useState(null)
+  const router = useRouter()
+
+  if (error) {
+    return <Typography>Error: {error}</Typography>
+  }
+
+  if (!data) {
+    return <Typography>Loading</Typography>
+  }
+
+  if (data.status !== "OK") {
+    router.push("/wizard")
+  }
 
   useEffect(() => {
     async function fetchData() {
@@ -49,14 +63,6 @@ const Homepage = () => {
       })
     }
   }, [socket])
-
-  if (error) {
-    return <Typography>Error: {error}</Typography>
-  }
-
-  if (!data) {
-    return <Typography>Loading</Typography>
-  }
 
   return (
     <>

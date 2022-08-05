@@ -1,0 +1,3 @@
+[submodule "mmdvmhost"]
+	path = MMDVMHost
+	url = git@github.com:dannyquist/MMDVMHost.git

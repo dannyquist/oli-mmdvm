@@ -3,7 +3,7 @@ import fs from 'fs'
 
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 
-const CONF_DIR = "/home/pi/code/oli/conf/"
+const CONF_DIR = "/oli/conf/"
 const MMDVM_INI = CONF_DIR + "MMDVM.ini"
 
 export default function handler(req, res) {
@@ -16,7 +16,7 @@ export default function handler(req, res) {
       } catch (err) {
         console.error("ERROR writing file:", err)
       }
-      res.status(200).json({status: 'in dev'})
+      res.status(200).json({status: 'OK'})
       return
     }
 
@@ -24,8 +24,18 @@ export default function handler(req, res) {
       mode = req.query.mode
     }
 
+    if (!fs.existsSync(MMDVM_INI)) {
+      res.status(200).json({config: {}, status: "not configured"})
+      return
+    }
+
     var config
     var data = fs.readFileSync(MMDVM_INI, 'utf-8')
+
+    if (!data) {
+      res.status(200).json({config: {}, status: "not found"})
+      return
+    }
 
     switch (mode) {
       case "ini":
@@ -33,10 +43,10 @@ export default function handler(req, res) {
         break
       case "json":
       default:
-        config = ini.parse(fs.readFileSync(MMDVM_INI, 'utf-8'))
+        config = ini.parse(data)
         break
     }
 
-    res.status(200).json({ config: config })
+    res.status(200).json({ config: config, status: "OK" })
   }
   
