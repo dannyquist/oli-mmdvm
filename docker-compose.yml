@@ -2,6 +2,8 @@ version: '3'
 services:
   oli-mmdvm:
     image: oli-mmdvm
+    devices:
+      - "/dev/ttyAMA0:/dev/ttyAMA0"
     ports:
       - "3000:3000"
     volumes:

@@ -1,11 +1,14 @@
 FROM node:lts as dependencies
 WORKDIR /oli
 COPY package.json yarn.lock ./
-RUN yarn install --frozen-lockfile
+RUN apt-get update && apt-get install -y python3-pip && \
+    pip3 install yarn && \
+    yarn install --frozen-lockfile
 
 FROM node:lts as mmdvmhost
 WORKDIR /oli/mmdvm/
 COPY MMDVMHost/ .
+RUN apt-get update && apt-get install -y build-essential
 RUN cd /oli/mmdvm && \
     make && \
     make INSTALL_DIR=/oli install
