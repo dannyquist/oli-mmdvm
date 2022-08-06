@@ -2,6 +2,8 @@ version: '3'
 services:
   oli-mmdvm:
     image: oli-mmdvm
+    ports:
+      - "3000:3000"
     volumes:
       - oli_conf:/oli/conf
 volumes:
