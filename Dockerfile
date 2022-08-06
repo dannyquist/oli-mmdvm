@@ -25,6 +25,7 @@ COPY --from=builder /oli/public ./public
 COPY --from=builder /oli/.next ./.next
 COPY --from=builder /oli/node_modules ./node_modules
 COPY --from=builder /oli/package.json ./package.json
+COPY conf/MMDVM.ini.handlebars .
 RUN mkdir /oli/log
 RUN mkdir /oli/conf
 

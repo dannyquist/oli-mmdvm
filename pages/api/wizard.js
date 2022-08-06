@@ -1,7 +1,7 @@
 import fs from 'fs'
 import handlebars from 'handlebars'
 
-const MMDVMINI_TEMPLATE = "/oli/conf/MMDVM.ini.handlebars"
+const MMDVMINI_TEMPLATE = "/oli/MMDVM.ini.handlebars"
 const MMDVMINI_PATH = "/oli/conf/MMDVM.ini"
 
 export default function handler(req, res) {

@@ -1,0 +1,8 @@
+version: '3'
+services:
+  oli-mmdvm:
+    image: oli-mmdvm
+    volumes:
+      - oli_conf:/oli/conf
+volumes:
+  oli_conf:
