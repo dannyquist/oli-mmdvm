@@ -15,15 +15,11 @@ const Homepage = () => {
   const {data, error} = useSWR('/api/logs?mode=json', fetcher)
   const [dmrStatus, setDmrStatus] = useState({})
   const [socket, setSocket] = useState(null)
-  let configOk = false
 
   useEffect(() => {
     async function fetchData() {
       await fetch('/api/socket')
     }
-
-    if (!configOk)
-      return
 
     fetchData()
     if (socket === null) {
