@@ -60,11 +60,11 @@ const Homepage = () => {
   }
 
   return (
-    <>
+    <div align="center">
       <Dmr status={dmrStatus} />
       {/* <Logs logs={data} last={20} /> */}
       {/* <Typography>Logs: {JSON.stringify(data)}</Typography> */}
-      </>
+    </div>
   );
 };
 
