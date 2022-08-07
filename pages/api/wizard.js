@@ -1,8 +1,11 @@
 import fs from 'fs'
 import handlebars from 'handlebars'
+import psList from 'ps-list' 
+import {spawn} from 'child_process'
 
 const MMDVMINI_TEMPLATE = "/oli/MMDVM.ini.handlebars"
 const MMDVMINI_PATH = "/oli/conf/MMDVM.ini"
+
 
 export default function handler(req, res) {
     if (req.method === "POST") {
@@ -20,8 +23,6 @@ export default function handler(req, res) {
 
             const template = handlebars.compile(source)
             const ini = template(data)
-
-            console.log("Compiled", ini)
 
             fs.writeFileSync(MMDVMINI_PATH, ini, {flags: 'w'})
 
