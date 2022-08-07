@@ -130,12 +130,8 @@ const SocketHandler = (req, res) => {
                              })
 
                         }else {
-                            console.log("M message:", _msg)
                             socket.broadcast.emit('log', {type: _type, date: _date, time: _time, msg: _msg})
                         }
-
-
-
                         break
                     default:
                         console.log("Unrecognized messsage type", _type, _msg)

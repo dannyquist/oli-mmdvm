@@ -1,20 +1,20 @@
 version: '3'
 services:
   oli:
-    image: oli-mmdvm
+    image: dannyquist/oli-mmdvm
     ports:
       - "3000:3000"
     volumes:
-      - /oli/conf:/oli/conf
-      - /oli/log:/oli/log
-  # mmdvmhost:
-  #   image: oli-mmdvm
-  #   devices:
-  #     - "/dev/ttyAMA0:/dev/ttyAMA0"
-  #   volumes:
-  #     - oli_conf:/oli/conf
-  #     - oli_log:/oli/log
-  #   command: /oli/MMDVMHost /oli/conf/MMDVM.ini
+      - oli_conf:/oli/conf
+      - oli_log:/oli/log
+  mmdvmhost:
+    image: dannyquist/oli-mmdvm
+    devices:
+      - "/dev/ttyAMA0:/dev/ttyAMA0"
+    volumes:
+      - oli_conf:/oli/conf
+      - oli_log:/oli/log
+    command: /oli/MMDVMHost /oli/conf/MMDVM.ini
 volumes:
   oli_conf:
   oli_log:
