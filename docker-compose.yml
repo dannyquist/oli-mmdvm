@@ -5,8 +5,8 @@ services:
     ports:
       - "3000:3000"
     volumes:
-      - oli_conf:/oli/conf
-      - oli_log:/oli/log
+      - /oli/conf:/oli/conf
+      - /oli/log:/oli/log
   # mmdvmhost:
   #   image: oli-mmdvm
   #   devices:
