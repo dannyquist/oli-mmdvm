@@ -10,7 +10,7 @@ export default function Dmr(props) {
     const theme = useTheme()
 
     return (
-        <Card sx={{ display: 'flex'}}>
+        <Card sx={{ display: 'flex', width: 400}}>
             <CardContent sx={{flex: '1 0 auto' }}>
                 <Typography component='div' variant='h5'>
                     RX: {props.status.from}
@@ -19,11 +19,12 @@ export default function Dmr(props) {
                     TX: {props.status.to ? props.status.to : "RF"}
                 </Typography>
             </CardContent>
-            <CardMedia component="Box" >
+            <CardMedia >
+                <Box>
                     <Typography variant='h5'>Slot: {props.status.slot}</Typography>
                     <Typography>BER: {props.status.ber}</Typography>
                     <Typography>Packet Loss: {props.status.packet_loss}</Typography>
-
+                </Box>
             </CardMedia>
         </Card>
 
