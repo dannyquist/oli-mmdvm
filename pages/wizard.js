@@ -107,7 +107,7 @@ export default function WizardPage() {
                 noValidate
                 autoComplete="off"
                 >
-                <Button onClick={onSave}>Save</Button>
+                <Button onClick={onSave} variant="contained">Save</Button>
                 <Typography variant="h5">Callsign</Typography>
                 <Typography gutterBottom>This is your government issued amateur radio callsign</Typography>
                 <TextField name="callsign" onChange={handleChange} value={state.callsign} variant="outlined" />

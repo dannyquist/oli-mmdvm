@@ -6,6 +6,7 @@ import useSWR from "swr";
 import Typography from "@mui/material"
 import SettingsIcon from '@mui/icons-material/Settings';
 import HomeIcon from '@mui/icons-material/Home';
+import EngineeringIcon from '@mui/icons-material/Engineering';
 import NextLink from 'next/link'
 import MuiLink from '@mui/material/Link'
 import MuiNextLink from '@components/MuiNextLink'
@@ -73,10 +74,17 @@ const Header = () => {
                         <div>tx: { parseFloat(data.config.Info.TXFrequency) / 1000000.0 } rx: { parseFloat(data.config.Info.RXFrequency) / 1000000.0 }</div>
                         <MuiNextLink 
                             key="Settings"
-                            href="/config"
+                            href="/wizard"
                             sx={{color: `white`, opacity: 1.0}}
                         >
                             <SettingsIcon />
+                        </MuiNextLink>
+                        <MuiNextLink 
+                            key="Edit Ini"
+                            href="/config"
+                            sx={{color: `white`, opacity: 1.0}}
+                        >
+                            <EngineeringIcon />
                         </MuiNextLink>
                     </Container>
                 </Toolbar>
