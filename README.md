@@ -32,8 +32,7 @@ no other changes should be required. Complete the following steps:
 2. Install Docker and docker-compose [Dev.To tutorial](https://dev.to/elalemanyo/how-to-install-docker-and-docker-compose-on-raspberry-pi-1mo) 
 3. Run the following commands:
 ```bash
-git clone --recurse-submodules https://github.com/dannyquist/oli-mmdvm.git
-cd oli-mmdvm
+curl https://raw.githubusercontent.com/dannyquist/oli-mmdvm/main/docker-compose.yml -o docker-compose.yml
 docker-compose up
 ```
 
