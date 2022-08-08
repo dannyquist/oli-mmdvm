@@ -2,6 +2,7 @@ version: '3'
 services:
   oli:
     image: dannyquist/oli-mmdvm
+    user: node
     ports:
       - "3000:3000"
     volumes:
@@ -9,6 +10,7 @@ services:
       - oli_log:/oli/log
   mmdvmhost:
     image: dannyquist/oli-mmdvm
+    user: root
     devices:
       - "/dev/ttyAMA0:/dev/ttyAMA0"
     volumes:
