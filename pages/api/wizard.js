@@ -19,8 +19,6 @@ export default function handler(req, res) {
 
             const source = fs.readFileSync(MMDVMINI_TEMPLATE, "utf-8")
 
-            // console.log("Read", source)
-
             const template = handlebars.compile(source)
             const ini = template(data)
 

@@ -3,33 +3,27 @@ import Tail from 'tail-file'
 import path from 'path'
 import fs from 'fs'
 import date from 'date-and-time'
+import {waitFile} from 'wait-file'
 
 const logpath = "/oli/log"
 
 
 const SocketHandler = (req, res) => {
-    const now = new Date()
-    const dateFmt = date.format(now, 'YYYY-MM-DD')
-    const fullPath = path.join(logpath, `MMDVM-${dateFmt}.log`)
+    const fullPath = path.join(logpath, `MMDVM.log`)
 
     if (res.socket.server.io) {
         console.log("Socket is already running")
-        res.end()
-    } else if (!fs.existsSync(fullPath)) {
-        console.log("Log file does not exist, MMDVMHost not running?")
         res.end()
     } else {
         console.log("Socket is initializing")
         const io = new Server(res.socket.server)
         res.socket.server.io = io
 
-
         io.on('connection', socket => {
             console.log("connection received")
             socket.broadcast.emit('dmr-status', {type: 'state', component: 'sock', status: 'Hello.'})
-
+        
             const mytail = new Tail(fullPath, line => {
-
                 const logre = /(\w): ([0-9]{4}-[0-9]{2}-[0-9]{2}) ([0-9]{2}:[0-9]{2}:[0-9]{2}[.][0-9]{3}) (.*)/
                 const logMatch = logre.exec(line)
                 
@@ -86,7 +80,7 @@ const SocketHandler = (req, res) => {
                                 packet_loss: _packet_loss,
                                 ber: _ber,
                                 datetime: `${_date} ${_time}`
-                             })
+                            })
                             
                         } else if (_msg.includes(" received RF voice header from ")) {
                             const re = /DMR Slot ([0-9]), received RF voice header from (.*) to (.*)/
@@ -127,7 +121,7 @@ const SocketHandler = (req, res) => {
                                 packet_loss: _packet_loss,
                                 ber: _ber, 
                                 datetime: `${_date} ${_time}`
-                             })
+                            })
 
                         }else {
                             socket.broadcast.emit('log', {type: _type, date: _date, time: _time, msg: _msg})
@@ -136,9 +130,21 @@ const SocketHandler = (req, res) => {
                     default:
                         console.log("Unrecognized messsage type", _type, _msg)
                 }
-
             })
+
+            mytail.on('error', err => {
+                console.log("boink error", err)
+                socket.broadcast.emit('mmdvm', {type: 'error', msg: err})
+            })
+
+            mytail.on('ready', fd => console.log('mytail ready'))
+
+            mytail.on('restart', reason => {
+                socket.broadcast.emit('mmdvm', {type: 'restart', msg: reason})
+            })
+
             mytail.start()
+
         })
     }
     res.end()

@@ -28,6 +28,10 @@ function getEnabledNetworks(config) {
 }
 
 function NetworksHeader(props) {
+    if (!props.config) {
+        return <>-</>
+    }
+
     const nets = getEnabledNetworks(props.config)
 
     return (
@@ -40,6 +44,9 @@ function NetworksHeader(props) {
 }
 
 function CallSignHeader(props) {
+    if (!props.config) {
+        return <>-</>
+    }
     return <>{props.config.General.Callsign}</>
 }
 
@@ -50,9 +57,15 @@ const Header = () => {
     if (error) return <>Failed to load</>
     if (!data) return <>Loading...</>
 
+    let config = null
     if (data.status === "not configured") {
-        return <>Not configured</>
+        config = null
+    } else {
+        config = data.config
     }
+
+    const txfreq = config ? parseFloat(config.Info.TXFrequency) / 1000000.0 : 0.0
+    const rxfreq = config ? parseFloat(config.Info.RXFrequency) / 1000000.0 : 0.0
 
     return (
         <>
@@ -69,9 +82,9 @@ const Header = () => {
                         >
                             <HomeIcon />
                         </MuiNextLink>
-                        <CallSignHeader config={data.config} />
-                        <NetworksHeader config={data.config} /> 
-                        <div>tx: { parseFloat(data.config.Info.TXFrequency) / 1000000.0 } rx: { parseFloat(data.config.Info.RXFrequency) / 1000000.0 }</div>
+                        <CallSignHeader config={config} />
+                        <NetworksHeader config={config} /> 
+                        <div>tx: { txfreq } rx: { rxfreq }</div>
                         <MuiNextLink 
                             key="Settings"
                             href="/wizard"
