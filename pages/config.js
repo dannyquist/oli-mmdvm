@@ -42,18 +42,18 @@ const Config = () => {
                         }
                     }
                     variant="contained">Save</Button>
-            <Editor
-                value={mmdvm ? mmdvm : data.config}
-                onValueChange={code => setMmdvm(code)}
-                highlight={code => highlight(code, languages.js)}
-                padding={10}
-                style={{
-                    fontFamily: '"Fira code", "Fira Mono", monospace',
-                    fontSize: 12,
-                    width: '100%',
-                    height: '50%'
-                }}
-                />
+                <Editor
+                    value={mmdvm ? mmdvm : data.config}
+                    onValueChange={code => setMmdvm(code)}
+                    highlight={code => highlight(code, languages.js)}
+                    padding={10}
+                    style={{
+                        fontFamily: '"Fira code", "Fira Mono", monospace',
+                        fontSize: 12,
+                        width: '100%',
+                        height: '50%'
+                    }}
+                    />
             </Container>
         </>
     );
