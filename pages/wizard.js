@@ -145,7 +145,6 @@ export default function WizardPage() {
 
 
             </Box>
-            <Typography>{JSON.stringify(state)}</Typography>
         </>
     )
 

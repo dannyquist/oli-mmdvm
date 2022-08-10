@@ -36,6 +36,11 @@ const SocketHandler = (req, res) => {
 
                 switch (_type) {
                     case 'I':
+                        if (_msg.includes("Opening the MMDVM")) {
+                            socket.broadcast.emit('status', {type: _type, date: _date, time: _time, msg: "startup"})
+                        } else if (_msg.includes("MMDVMHost") && _msg.includes("is running")) {
+                            socket.broadcast.emit('status', {type: _type, date: _date, time: _time, msg: "online"})
+                        }
                     case 'W':
                     case 'E':
                         socket.broadcast.emit('log', {type: _type, date: _date, time: _time, msg: _msg})
@@ -123,7 +128,7 @@ const SocketHandler = (req, res) => {
                                 datetime: `${_date} ${_time}`
                             })
 
-                        }else {
+                        } else {
                             socket.broadcast.emit('log', {type: _type, date: _date, time: _time, msg: _msg})
                         }
                         break

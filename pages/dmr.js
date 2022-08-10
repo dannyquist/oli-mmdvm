@@ -15,6 +15,9 @@ const Homepage = () => {
   const {data, error} = useSWR('/api/logs?mode=json', fetcher)
   const [dmrStatus, setDmrStatus] = useState({})
   const [socket, setSocket] = useState(null)
+  const [dmrHistory, setDmrHistory] = useState({log: []})
+  const [rfStatus, setRfStatus] = useState({})
+  const [networkStatus, setNetworkStatus] = useState({})
 
   useEffect(() => {
     async function fetchData() {
@@ -31,15 +34,29 @@ const Homepage = () => {
         console.log("Socket connected")
       })
 
+      socket.on('status', msg => {
+        setDmrStatus(msg.msg)
+      })
+
+      const addToHistory = msg => {
+        const _hist = {...dmrHistory}
+        _hist.log.push(msg)
+        setDmrHistory(_hist)
+      }
+
       socket.on('dmr-status', msg => {
         console.log("dmr-status", msg)
         switch(msg.type) {
           case 'start':
           case 'rf-end':
+            addToHistory(msg)
+            setRfStatus({...msg})
+            break
           case 'transmit':
           case 'network-end':
           case 'network-start':
-              setDmrStatus({...msg})
+              addToHistory(msg)
+              setNetworkStatus({...msg})
             break
           default:
             console.log("unhandled message:", msg)
@@ -47,7 +64,7 @@ const Homepage = () => {
       })
 
       socket.on('log', msg => {
-        // console.log("log received", msg)
+        console.log("log received", msg)
       })
     }
   }, [socket])
@@ -62,7 +79,7 @@ const Homepage = () => {
 
   return (
     <div align="center">
-      <Dmr status={dmrStatus} />
+      <Dmr status={dmrStatus} network={networkStatus} rf={rfStatus} history={dmrHistory} />
       {/* <Logs logs={data} last={20} /> */}
       {/* <Typography>Logs: {JSON.stringify(data)}</Typography> */}
     </div>
