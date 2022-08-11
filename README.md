@@ -1,15 +1,15 @@
 # Oli MMDVM
 
-Oli-MMDVM seeks to be an simple front-end for using the MMDVMHost daemon. Currently, OliMMDVM 
+Oli-MMDVM seeks to be a simple front-end for using the MMDVMHost daemon. Currently, OliMMDVM 
 only supports DMR, and has only been tested using the TGIF and Brandmeister networks.
 
-Current functionality is limited to DMR networks, but others will be added soon.
+Current functionality is limited to DMR networks, but others modes (DSTAR, YSF) will be added at a later time.
 
 ![img.png](assets/olimmdvm-screenshot.png)
 
 ## Recommended Hardware
 
-1. Raspberry Pi 3/4 or similar SBC.
+1. Currently only supports the Raspberry Pi 4 SBC.
 2. [MMDVM Hotspot Dual Antenna Board Duplex](https://www.amazon.com/gp/product/B07XBZYHFC) (no affiliate link)
 3. A case of your choosing
 
@@ -28,10 +28,13 @@ The key thing is to remember to short the JP1 board and keep it shorted until th
 Oli-MMDVM was designed to be run in a Docker container. Provided you're using the recommended hardware,
 no other changes should be required. Complete the following steps:
 
-1. Install your Raspberry Pi or similar SBC with Debian.
+1. Install your Raspberry Pi or similar SBC with the standard Raspberry Pi image.
 2. Install Docker and docker-compose [Dev.To tutorial](https://dev.to/elalemanyo/how-to-install-docker-and-docker-compose-on-raspberry-pi-1mo) 
 3. Run the following commands:
 ```bash
+sudo usermod -aG dialout pi
+sudo usermod -aG docker pi
+sudo reboot
 curl https://raw.githubusercontent.com/dannyquist/oli-mmdvm/main/docker-compose.yml -o docker-compose.yml
 docker-compose up
 ```
@@ -95,6 +98,6 @@ Refresh the main page http://yourpi.local/ and you should see some activity.
 Send me a pull request.
 
 # License
-Copyright (C) Danny Quist, K1HYL
+Copyright &copy; 2022 Danny Quist, K1HYL
 
 See `LICENSE` file.
