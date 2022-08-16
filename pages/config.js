@@ -38,7 +38,12 @@ const Config = () => {
                             }
                             fetch('/api/mmdvm?mode=ini', requestOptions)
                                 .then(response => response.json())
-                                .then(data => console.log("POST response:", data))
+                                .then(data => {
+                                    fetch("/api/system?command=reload")
+                                    .then(system_resp => {
+                                        console.log(`Received ${system_resp}`)
+                                    })
+                                })
                         }
                     }
                     variant="contained">Save</Button>

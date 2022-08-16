@@ -20,7 +20,7 @@ const Homepage = () => {
   }
 
   if (!data) {
-    return <Typography>Loading...</Typography>
+    return <Typography>Collecting decibels...</Typography>
   }
 
   console.log(data.config)
@@ -31,7 +31,7 @@ const Homepage = () => {
     router.push("/dmr")
   }
 
-  return <Typography>{JSON.stringify(data)}</Typography>
+  return <Typography>Please stand by...tuning cosmic microwave background radiation for excellence</Typography>
 
 };
 

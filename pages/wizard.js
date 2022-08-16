@@ -67,7 +67,12 @@ export default function WizardPage() {
             body: JSON.stringify(state)
         })
             .then(response => response.json())
-            .then(data => console.log("Received response from save event", data))
+            .then(data => {
+                fetch("/api/system?command=reload")
+                    .then(system_resp => {
+                        console.log(`Received ${system_resp}`)
+                    })
+            })
     }
 
     useEffect(function() {
