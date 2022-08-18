@@ -7,7 +7,7 @@ FROM node:lts as mmdvmhost
 WORKDIR /oli/mmdvm/
 COPY MMDVMHost/ .
 RUN cd /oli/mmdvm && \
-    make && \
+    make -j && \
     make INSTALL_DIR=/oli install
 
 FROM node:lts as builder
@@ -26,9 +26,11 @@ COPY --from=builder /oli/.next ./.next
 COPY --from=builder /oli/node_modules ./node_modules
 COPY --from=builder /oli/package.json ./package.json
 COPY conf/MMDVM.ini.handlebars .
-RUN mkdir /oli/log && \
+RUN usermod -aG dialout node && \
+    mkdir /oli/log && \
     mkdir /oli/conf && \
-    chown -R node /oli
+    chown -R node /oli/conf && \
+    chown -R node /oli/log
 
 
 USER node
