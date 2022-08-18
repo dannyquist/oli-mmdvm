@@ -23,20 +23,52 @@ The key thing is to remember to short the JP1 board and keep it shorted until th
 
 ![img.png](assets/mmdvm-jp1-callout.png)
 
-## Installation
+## OS Configuration
 
-Oli-MMDVM was designed to be run in a Docker container. Provided you're using the recommended hardware,
-no other changes should be required. Complete the following steps:
+tl;dr Set up Raspberry Pi OS normally with network access, disable the serial terminal, install docker + docker-compose.
 
-1. Install your Raspberry Pi or similar SBC with Debian.
-2. Install Docker and docker-compose [Simplilearn tutorial](https://www.simplilearn.com/tutorials/docker-tutorial/raspberry-pi-docker) 
-3. Run the following commands:
+Update the base system
+
 ```bash
-curl https://raw.githubusercontent.com/dannyquist/oli-mmdvm/main/docker-compose.yml -o docker-compose.yml
-docker-compose up
+sudo apt update
+sudo apt upgrade -y
+sudo reboot
 ```
 
+Install Docker using the [Simplilearn tutorial](https://www.simplilearn.com/tutorials/docker-tutorial/raspberry-pi-docker)
+
+Install docker-compose 
+```bash
+sudo apt install python3 python3-pip -y
+sudo pip3 install docker-compose
+```
+
+Disable the serial console
+   1. `sudo raspi-config`
+   2. Interface Options -> Serial Port
+   3. **NO** login shell over serial port (the MMDVM needs it)
+   4. **YES** Serial port hardware enabled
+   5. Finish
+
+Add user to the dialout group
+
+```bash
+sudo usermod -aG dialout ${USER}
+```
+
+## Installation
+
+Run the following commands:
+```bash
+curl https://raw.githubusercontent.com/dannyquist/oli-mmdvm/main/docker-compose.yml -o docker-compose.yml
+docker-compose up -d && docker-compose logs -f 
+```
+
+
+
 ## Development Install
+
+Follow these directions if you would like to hack on the code. 
 
 Check out the code repository from Github:
 
@@ -101,5 +133,5 @@ See `LICENSE` file.
 
 # Changelog
 
-14 August 2022 - initial release for Defcon 30 Ham Radio Village talk
-16 August 2022 - Configuration saves now restart the MMDVMHost docker 
+- 14 August 2022 - initial release for Defcon 30 Ham Radio Village talk
+- 16 August 2022 - Configuration saves now restart the MMDVMHost docker 
