@@ -26,7 +26,8 @@ COPY --from=builder /oli/.next ./.next
 COPY --from=builder /oli/node_modules ./node_modules
 COPY --from=builder /oli/package.json ./package.json
 COPY conf/MMDVM.ini.handlebars .
-RUN groupadd -g 995 docker && \ 
+RUN groupadd -g 995 docker && \
+    usermod -aG docker node && \
     usermod -aG dialout node && \
     mkdir /oli/log && \
     mkdir /oli/conf && \
