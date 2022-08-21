@@ -64,7 +64,7 @@ const Homepage = () => {
       })
 
       socket.on('log', msg => {
-        console.log("log received", msg)
+        // console.log("log received", msg)
       })
     }
   }, [socket])

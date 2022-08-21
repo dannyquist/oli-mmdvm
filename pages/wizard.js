@@ -103,6 +103,60 @@ export default function WizardPage() {
     }, [data])
 
     return (
+        <Grid container>
+            <Grid item xs={12}>&nbsp;</Grid>
+            <Grid item xs={12} align="center">
+                <Button onClick={onSave} variant="contained">Save</Button>
+            </Grid>
+            <Grid item xs={12}>&nbsp;</Grid>
+            <Grid item xs={6}>
+                <Typography variant="h5">Callsign</Typography>
+                <TextField name="callsign" onChange={handleChange} value={state.callsign} variant="outlined" />
+            </Grid>
+            <Grid item xs={6}>
+                <Typography variant="h5">DMR ID</Typography>
+                <TextField name="dmrid" onChange={handleChange} value={state.dmrid} variant="outlined" />
+            </Grid>
+            <Grid item xs={6}>
+                <Typography variant="h5">DMR Network</Typography>
+                <TextField name="dmrnetwork" onChange={handleChange} value={state.dmrnetwork} variant="outlined" />
+            </Grid>    
+            <Grid item xs={6}>
+                <Typography variant="h5">DMR Network Port</Typography>
+                <TextField name="dmrnetworkport" onChange={handleChange}  value={state.dmrnetworkport} variant="outlined" />
+            </Grid>        
+            <Grid item xs={6}>
+                <Typography variant="h5">DMR Network Password</Typography>
+                <TextField name="dmrpassword" onChange={handleChange} value={state.dmrpassword} variant="outlined" />    
+            </Grid>    
+            <Grid item xs={6}>
+                <Typography variant="h5">Repeater RX</Typography>
+                <TextField name="rxfreq" onChange={handleChange} value={state.rxfreq} variant="outlined" />
+            </Grid>    
+            <Grid item xs={6}>
+                <Typography variant="h5">Repeater TX</Typography>
+                <TextField name="txfreq" onChange={handleChange}  value={state.txfreq} variant="outlined" />            
+            </Grid>
+            <Grid item xs={6}>
+                <Typography variant="h5">Latitude</Typography>
+                <TextField name="lat" onChange={handleChange}  value={state.lat} variant="outlined" />
+            </Grid>            
+            <Grid item xs={6}>
+                <Typography variant="h5">Longitude</Typography>
+                <TextField name="lon" onChange={handleChange} value={state.lon} variant="outlined" />
+            </Grid>    
+            <Grid item xs={6}>
+                <Typography variant="h5">Location</Typography>
+                <TextField name="location" onChange={handleChange} value={state.location} variant="outlined" />
+            </Grid>
+            <Grid item xs={6}>
+                <Typography variant="h5">Country</Typography>
+                <TextField name="country" onChange={handleChange}  value={state.country} variant="outlined" />                
+            </Grid>
+        </Grid>
+    )
+
+    return (
         <>
             <Box
                 component="form"
@@ -136,17 +190,10 @@ export default function WizardPage() {
                 <Typography variant="h5">RX Frequency</Typography>
                 <TextField name="rxfreq" onChange={handleChange} value={state.rxfreq} variant="outlined" />
 
-                <Typography variant="h5">Latitude</Typography>
-                <TextField name="lat" onChange={handleChange}  value={state.lat} variant="outlined" />
 
-                <Typography variant="h5">Longitude</Typography>
-                <TextField name="lon" onChange={handleChange} value={state.lon} variant="outlined" />
+                
 
-                <Typography variant="h5">Location</Typography>
-                <TextField name="location" onChange={handleChange} value={state.location} variant="outlined" />
 
-                <Typography variant="h5">Country</Typography>
-                <TextField name="country" onChange={handleChange}  value={state.country} variant="outlined" />
 
 
             </Box>
