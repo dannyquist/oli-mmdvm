@@ -1,7 +1,7 @@
 version: '3'
 services:
   oli:
-    image: dannyquist/oli-mmdvm
+    image: dannyquist/oli-mmdvm:latest
     user: node
     restart: always
     ports:
@@ -10,7 +10,7 @@ services:
       - oli_conf:/oli/conf
       - oli_log:/oli/log
   mmdvmhost:
-    image: dannyquist/oli-mmdvm
+    image: dannyquist/oli-mmdvm:latest
     user: root
     restart: always
     devices:
