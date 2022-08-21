@@ -51,7 +51,7 @@ export default function Dmr(props) {
                 <TableBody>
                     {props.history.log.map((value, index) => {
                         return (
-                            <TableRow>
+                            <TableRow key={index}>
                                 <TableCell>{value.datetime}</TableCell>
                                 <TableCell>{value.type}</TableCell>
                                 <TableCell>{value.slot}</TableCell>

@@ -20,7 +20,7 @@ function getEnabledNetworks(config) {
     var ret = {}
 
     Object.keys(config).map((key) => {
-        if (config[key].Enable === '1')
+        if (config[key].Enable === '1' && !key.includes("Network"))
             ret[key] = config[key]
     })
 
