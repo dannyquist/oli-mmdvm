@@ -23,7 +23,7 @@
     "iframe-resizer-react": "^1.1.0",
     "ini": "^3.0.0",
     "joi": "^17.6.0",
-    "next": "12.1.6",
+    "next": ">=13.4.20-canary.13",
     "prismjs": "^1.28.0",
     "ps-list": "^8.1.0",
     "react": "18.1.0",
